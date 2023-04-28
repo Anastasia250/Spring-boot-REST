@@ -22,10 +22,21 @@ public class UserController {
     public UserController() {
     }
 
+    @GetMapping("/admin")
+    public String adminPage(Model model, Principal principal) {
+        model.addAttribute("users", userService.listUsers());
+        return "admin";
+    }
+
     @GetMapping("/user")
-    public String userHomePage(Model model, Principal principal) {
+    public User userPage(Model model, Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "user";
+        return user;
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 }

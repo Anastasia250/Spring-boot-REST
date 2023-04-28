@@ -13,10 +13,7 @@ public class UserDaoImp implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
+
     @Override
     public void addUser(User user) {
         entityManager.persist(user);
@@ -30,9 +27,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public void deleteUser(long id) {
-        getUserById(id).getEmail();
-        User deletedUser = getUserById(id);
-        entityManager.remove(deletedUser);
+        entityManager.remove(entityManager.find(User.class, id));
 
     }
 
@@ -42,9 +37,8 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        return entityManager.createQuery("select user from User user").getResultList();
+        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
     @Override
